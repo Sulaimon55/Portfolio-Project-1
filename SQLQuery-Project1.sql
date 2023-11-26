@@ -1,36 +1,34 @@
+---To Show all the columns in the Covid Death Table
 SELECT *
 FROM CovidDeaths
 ORDER BY 3,4
 
+---To Show all the columns in the Covid Vaccination Table
+SELECT *
+FROM CovidVaccinations$
+ORDER BY 3,4
 
---SELECT *
---FROM CovidVaccinations$
---ORDER BY 3,4
-
+---To show selected columns in the Covid Death Table
 SELECT location, date, total_cases, new_cases, total_deaths, population
 FROM CovidDeaths
 ORDER BY 1,2
 
 
----Looking at Total Cases vs Total Deaths
----Likelihood of death from Covid
-
+---Looking at Total Cases vs Total Deaths(What is theLikelihood of death from Covid in the United State)
 SELECT location, date, total_cases, total_deaths, (CONVERT(float, total_deaths) / CONVERT(float, total_cases)*100) AS DeathPercent
 FROM CovidDeaths
 WHERE location like '%states%'
 ORDER BY 1,2
 
 ----Alternatively, we can write the above query as below:
-SELECT location, date, total_cases, total_deaths,CAST(total_deaths as int) / CAST(total_deaths as int)
+SELECT location, date, total_cases, total_deaths,CAST(total_deaths as int) / CAST(total_deaths as int)*100 AS DeathPercentage
 FROM CovidDeaths
 WHERE location like '%states%'
 ORDER BY 1,2
 
 
 
----Looking at Total Cases vs Population
----Shows what percentage of population got covid
-
+---Looking at Total Cases vs Population(Shows what percentage of population got covid)
 SELECT location, date, population, total_cases,(CONVERT(float, total_cases) / NULLIF (CONVERT(float, population),0)*100) AS InfectionPercentage
 FROM CovidDeaths
 WHERE location like '%states%'
@@ -40,8 +38,7 @@ SELECT location, date, population, total_cases,(CONVERT(float, total_cases) / NU
 FROM CovidDeaths
 ORDER BY 1,2
 
----Which country has highest infection rate
-
+---To show Which country has highest infection rate
 SELECT location, population,MAX(CAST(total_cases as int)) AS HighestInfectionRate,MAX((CAST(total_cases as int)) / population)*100 AS InfectionPercentage
 FROM CovidDeaths
 GROUP BY location, population
